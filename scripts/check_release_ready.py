@@ -45,7 +45,6 @@ REQUIRED_METADATA_FIELDS = [
     "description",
     "readme",
     "requires-python",
-    "license",
     "authors",
     "keywords",
     "classifiers",
@@ -121,8 +120,9 @@ def check_dist_artifacts(version: str, dist_dir: Path = DIST_DIR) -> tuple[bool,
         name = f.name
         if name.startswith("."):  # skip .gitignore and other dotfiles created by build tools
             continue
-        # Accept suture-<version>.tar.gz and suture-<version>-py3-none-any.whl
-        if not (name.startswith(f"suture-{version}") and (name.endswith(".whl") or name.endswith(".tar.gz"))):
+        # Accept suture-py-<version>.tar.gz and suture_py-<version>-py3-none-any.whl
+        # pip normalises hyphens to underscores in wheel filenames
+        if not ((name.startswith(f"suture_py-{version}") or name.startswith(f"suture-py-{version}")) and (name.endswith(".whl") or name.endswith(".tar.gz"))):
             stale.append(name)
 
     if stale:

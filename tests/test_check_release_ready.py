@@ -141,8 +141,8 @@ def test_dist_empty_is_warning(tmp_path: Path) -> None:
 def test_dist_correct_artifacts(tmp_path: Path) -> None:
     dist = tmp_path / "dist"
     dist.mkdir()
-    (dist / "suture-0.1.0.tar.gz").write_text("")
-    (dist / "suture-0.1.0-py3-none-any.whl").write_text("")
+    (dist / "suture_py-0.1.0.tar.gz").write_text("")
+    (dist / "suture_py-0.1.0-py3-none-any.whl").write_text("")
     ok, msg = check_dist_artifacts("0.1.0", dist)
     assert ok is True
     assert "0.1.0" in msg
@@ -151,7 +151,7 @@ def test_dist_correct_artifacts(tmp_path: Path) -> None:
 def test_dist_stale_version(tmp_path: Path) -> None:
     dist = tmp_path / "dist"
     dist.mkdir()
-    (dist / "suture-0.0.9.tar.gz").write_text("")
+    (dist / "suture_py-0.0.9.tar.gz").write_text("")
     ok, msg = check_dist_artifacts("0.1.0", dist)
     assert ok is False
     assert "stale" in msg
@@ -161,8 +161,8 @@ def test_dist_dotfiles_ignored(tmp_path: Path) -> None:
     dist = tmp_path / "dist"
     dist.mkdir()
     (dist / ".gitignore").write_text("*\n!.gitignore\n")
-    (dist / "suture-0.1.0.tar.gz").write_text("")
-    (dist / "suture-0.1.0-py3-none-any.whl").write_text("")
+    (dist / "suture_py-0.1.0.tar.gz").write_text("")
+    (dist / "suture_py-0.1.0-py3-none-any.whl").write_text("")
     ok, _ = check_dist_artifacts("0.1.0", dist)
     assert ok is True
 

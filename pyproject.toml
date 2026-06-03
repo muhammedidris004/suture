@@ -1,5 +1,5 @@
 [project]
-name = "suture"
+name = "suture-py"
 version = "0.1.5"
 description = "A Python project setup doctor that diagnoses broken imports, env files, pyproject config, and pytest setup issues."
 readme = "README.md"
