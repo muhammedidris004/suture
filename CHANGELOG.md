@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [0.1.1] - 2026-06-03
+
+### Fixed
+- Suppress SyntaxWarnings from third-party files during `ast.parse` — previously leaked noise into terminal output on Python 3.14
+- Downgrade ENV002 severity to LOW/LOW for known system variables (`CI`, `PATH`, `HOME`, `TERM`, `COLORFGBG`, etc.) to reduce false positives on large projects
+
 ## [0.1.0] - 2026-06-03
 
 ### Added
