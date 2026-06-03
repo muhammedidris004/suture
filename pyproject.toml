@@ -1,9 +1,8 @@
 [project]
 name = "suture"
-version = "0.1.4"
+version = "0.1.5"
 description = "A Python project setup doctor that diagnoses broken imports, env files, pyproject config, and pytest setup issues."
 readme = "README.md"
-license = "MIT"
 requires-python = ">=3.10"
 authors = [
   { name = "Muhammed Idris Bin Yacoob" },
@@ -47,13 +46,13 @@ dev = [
 ]
 
 [build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
+requires = ["flit_core>=3.4"]
+build-backend = "flit_core.buildapi"
 
-[tool.hatch.build.targets.wheel]
-packages = ["src/suture"]
+[tool.flit.module]
+name = "suture"
 
-[tool.hatch.build.targets.sdist]
+[tool.flit.sdist]
 exclude = [
     "scripts/",
     "docs/",
