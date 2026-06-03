@@ -355,10 +355,10 @@ not upload anything.
 
 ## Contributing
 
-See [CONTRIBUTING.md](CONTRIBUTING.md).
+See [CONTRIBUTING.md](https://github.com/muhammedidris004/suture/blob/main/CONTRIBUTING.md).
 
-For the first public release workflow, see [docs/first-release.md](docs/first-release.md).
+For the first public release workflow, see [docs/first-release.md](https://github.com/muhammedidris004/suture/blob/main/docs/first-release.md).
 
 ## License
 
-MIT — see [LICENSE](LICENSE).
+MIT — see [LICENSE](https://github.com/muhammedidris004/suture/blob/main/LICENSE).
