@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import ast
+import warnings
 from pathlib import Path
 
 from suture.checks import SKIP_DIRS
@@ -75,7 +76,9 @@ def _collect_python_files(root: Path) -> list[Path]:
 def _has_relative_imports(path: Path) -> bool:
     try:
         source = path.read_text(encoding="utf-8", errors="replace")
-        tree = ast.parse(source, filename=str(path))
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore")
+            tree = ast.parse(source, filename=str(path))
     except SyntaxError:
         return False
     for node in ast.walk(tree):

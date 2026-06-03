@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import ast
+import warnings
 from pathlib import Path
 
 from suture.checks import SKIP_DIRS
@@ -20,7 +21,9 @@ def _extract_env_vars_from_file(path: Path) -> set[str]:
     """Extract statically referenced env var names from a Python file."""
     try:
         source = path.read_text(encoding="utf-8", errors="replace")
-        tree = ast.parse(source, filename=str(path))
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore")
+            tree = ast.parse(source, filename=str(path))
     except (SyntaxError, PermissionError, UnicodeDecodeError):
         return set()
 
@@ -112,6 +115,16 @@ def _parse_gitignore(path: Path) -> set[str]:
     return entries
 
 
+# Well-known system/CI variables that are not application secrets.
+# Findings for these are downgraded to LOW/MEDIUM so they don't dominate reports.
+_SYSTEM_VARS = frozenset({
+    "CI", "HOME", "PATH", "TERM", "SHELL", "USER", "LOGNAME", "LANG",
+    "LC_ALL", "LC_CTYPE", "TMPDIR", "TMP", "TEMP", "PWD", "OLDPWD",
+    "COLORFGBG", "COLORTERM", "TERM_PROGRAM", "TERM_PROGRAM_VERSION",
+    "COLUMNS", "LINES",
+})
+
+
 def _is_env_ignored(gitignore_entries: set[str]) -> bool:
     return any(e in (".env", "*.env", ".env*") for e in gitignore_entries)
 
@@ -171,13 +184,15 @@ def check_env(root: Path, py_files: list[Path] | None = None) -> CheckResult:
             # ENV002: vars in code but missing from .env.example
             missing_from_example = code_vars - example_vars
             for var in sorted(missing_from_example):
+                is_system = var in _SYSTEM_VARS
                 result.issues.append(
                     Issue(
                         code="ENV002",
                         title="Environment variable used in code but missing from .env.example",
-                        severity=Severity.HIGH,
-                        confidence=Confidence.HIGH,
-                        reason=f"Code references '{var}' but it is not documented in .env.example.",
+                        severity=Severity.LOW if is_system else Severity.HIGH,
+                        confidence=Confidence.LOW if is_system else Confidence.HIGH,
+                        reason=f"Code references '{var}' but it is not documented in .env.example."
+                               + (" This looks like a system variable — review before adding." if is_system else ""),
                         suggestion="Add the missing variable to .env.example with an empty placeholder.",
                         fix_id="create-or-update-env-example",
                     )
