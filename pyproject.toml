@@ -1,6 +1,6 @@
 [project]
 name = "suture"
-version = "0.1.1"
+version = "0.1.2"
 description = "A Python project setup doctor that diagnoses broken imports, env files, pyproject config, and pytest setup issues."
 readme = "README.md"
 license = { file = "LICENSE" }

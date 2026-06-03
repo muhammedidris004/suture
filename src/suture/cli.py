@@ -6,6 +6,7 @@ from typing import Optional
 
 import typer
 
+from suture import __version__
 from suture.checks.env import check_env
 from suture.checks.imports import check_imports
 from suture.checks.pyproject import check_pyproject
@@ -13,11 +14,28 @@ from suture.doctor import run_all_checks
 from suture.fixer import apply_dry_run, apply_interactive, apply_safe
 from suture.report import print_check_result, print_report, report_to_dict
 
+
+def _version_callback(value: bool) -> None:
+    if value:
+        typer.echo(f"suture {__version__}")
+        raise typer.Exit()
+
+
 app = typer.Typer(
     name="suture",
     help="Suture stitches broken Python project setups back together with safe, explainable diagnostics.",
     no_args_is_help=True,
 )
+
+
+@app.callback()
+def main_callback(
+    version: Optional[bool] = typer.Option(
+        None, "--version", "-V", callback=_version_callback, is_eager=True,
+        help="Show version and exit.",
+    ),
+) -> None:
+    pass
 
 
 def resolve_project_path(path: Optional[str], *, allow_file: bool = False) -> Path:
