@@ -103,14 +103,17 @@ uv run suture doctor examples/broken-projects/missing-env-gitignore
 
 ## Install
 
-Once published:
-
 ```bash
-pipx install suture
+pip install suture-py
 suture doctor
 ```
 
-> Suture is not yet published to PyPI. Use the local setup above.
+Or with pipx for an isolated install:
+
+```bash
+pipx install suture-py
+suture doctor
+```
 
 ---
 
